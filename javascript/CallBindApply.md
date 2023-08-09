@@ -2,7 +2,7 @@
 <h1>Call, Bind & Apply</h1>
 </div>
 
-Call, bind and Apply are three super important JavaScript methods that are available to all JavaScript functions, which are used to set the this keyword independent of how the function is called. You can use these methods to tie a function into an object and call the function as if it belonged to that object
+<h3>Call, bind and Apply are three super important JavaScript methods that are available to all JavaScript functions, which are used to set the this keyword independent of how the function is called. You can use these methods to tie a function into an object and call the function as if it belonged to that object</h3>
 
 So let's go and have a deep dive into explicit object binding in javascript i.e., Call, Bind and Apply methods and discuss some of the most commonly asked interview questions on it!
 

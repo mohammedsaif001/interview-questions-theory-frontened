@@ -1,5 +1,8 @@
 <div align="center"><h1>'this' Keyword</h1></div>
+
+<h3>
 The value of this is determined by how a function is called (runtime binding). So, there are two types of binding when it comes to object binding in JS, one is implicit and other is explicit.
+</h3>
 
 ## Implicit Binding
 
