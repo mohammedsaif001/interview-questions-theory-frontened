@@ -1,0 +1,66 @@
+<div align="center">
+<h1>Hoisting</h1>
+</div>
+
+## Javascript Execution Context
+
+```js
+let a = 10;
+function multiply(a) {
+  return a * 20;
+}
+let b = multiply(20);
+console.log(b);
+```
+
+JavaScript executes the following snippet in 2 phases line by line.
+<br/>There are 2 phases :
+
+<ol>
+<li>Creation phase (Memory Creation Phase)</li>
+<li>Execution phase (Code Execution Phase)</li>
+</ol>
+
+### Creation Phase
+
+<ol>
+<li>It creates a global or window object</li>
+<li>It setups a memory heap for storing functions and variables references. It takes all variables and functions to store inside the window object.
+
+</li>
+<li>It Initializes variables and functions. For variables it initializes with undefined and for functions declaration it stores the complete function body and stores inside the window object.</li>
+</ol>
+
+### Execution Phase
+
+JS engine executes the code line by line. It assigns values to variables and executes the function calls.
+
+P.S. : For every function it creates a new execution context
+
+It also uses call stack to keep track of the function calls
+
+## What is Hoisting?
+
+During the creation phase JS engine tends to move the declaration of variables and function to the top of the code which is know as hoisting.
+
+```js
+console.log(count); // undefined
+var count = 4;
+```
+
+It gives undefined because of hoisting.
+
+During creation phase it creates memory space for count variable and assigns a value undefined. Now during execution phase it sees the variable count and prints undefined.
+
+### Are let and const also hoisted?
+
+```js
+console.log(count);
+let count = 6; // ReferenceError : cannot access 'count' before initialization
+```
+
+Yes ! they are hoisted but in temporal dead zone.
+
+### What is Temporal dead zone?
+
+It is the time between declaration and initialization of let and const variables.
