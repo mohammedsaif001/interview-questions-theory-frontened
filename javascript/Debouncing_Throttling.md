@@ -13,12 +13,12 @@ For example, when searching by typing "bangalore," instead of making API calls f
 <div class="container">
   <div>
     <input type="text" placeholder="search" id="inputSearch" />
-    <!-- Input Search Devounce -->
+    <!-- Input Search Debounce -->
     <div id="text"></div>
     <div id="triggered"></div>
     <div id="debounce_triggered"></div>
   </div>
-  <!-- Button Pressed Debounc -->
+  <!-- Button Pressed Debounce -->
   <div>
     <button class="buttonClicked" onclick="btnClickedFunction()">
       Click Me
