@@ -1,6 +1,7 @@
 <div align="center">
 <h1>Hoisting</h1>
 </div>
+Hoisting is a concept which enables us to extract values of variables and functions even before initialising/assigning value without getting error and this is happening due to the 1st phase (memory creation phase) of the Execution Context.
 
 ## Javascript Execution Context
 
@@ -51,6 +52,31 @@ var count = 4;
 It gives undefined because of hoisting.
 
 During creation phase it creates memory space for count variable and assigns a value undefined. Now during execution phase it sees the variable count and prints undefined.
+
+<h4>Another Example with function</h4>
+
+```js
+getName(); // Namaste JavaScript
+console.log(x); // Uncaught Reference: x is not defined.
+console.log(getName); // f getName(){ console.log("Namaste JavaScript); }
+function getName() {
+  console.log("Namaste JavaScript");
+}
+```
+
+<h4>Example with named function</h4>
+
+```js
+getName(); // Uncaught TypeError: getName is not a function
+console.log(getName);
+var getName = function () {
+  console.log("Namaste JavaScript");
+};
+// The code won't execute as the first line itself throws an TypeError.
+```
+
+This code snippet did not work because the above function is a named function with var keyword, unlike the regular function which gets hoisted this named function treats function as a variabe.
+So here in this case initially the var is undefined so it's not a function.
 
 ### Are let and const also hoisted?
 
