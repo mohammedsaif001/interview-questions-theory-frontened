@@ -2,6 +2,8 @@
 
 <h3>Closure is a combination of functions bundled together with it's lexical environment. It is a function that references variables in the outer scope from it's inner scope</h3>
 
+<h4>A closure is a function that has access to its outer function scope even after the function has returned. Meaning, A closure can remember and access variables and arguments reference of its outer function even after the function has returned.</h4>
+
 ### What is Lexical Scope?
 
 A Lexical scope in JavaScript means that a variable defined outside a function can be accessible inside another function defined after the variable declaration. But the opposite is not true; the variables defined inside a function will not be accessible outside that function.
@@ -104,6 +106,92 @@ However, inside the conditional, another let count = 1 declares a local variable
 
 The second console.log(count) logs 0, since here count variable is accessed from the outer scope.</p>
 
+</li>
+<li><h3> Will the below code still forms a closure?</h3>
+
+```js
+function outer() {
+  function inner() {
+    console.log(a);
+  }
+  var a = 10;
+  return inner;
+}
+outer()(); // 10
+```
+
+<h4>Answer: </h4>Yes, because inner function forms a closure with its outer environment so sequence doesn't matter.
+</li>
+
+<li><h3>Changing var to let, will it make any difference?</h3>
+
+```js
+function outer() {
+  let a = 10;
+  function inner() {
+    console.log(a);
+  }
+  return inner;
+}
+outer()(); // 10
+```
+
+<h4>Answer: </h4>It will still behave the same way
+</li>
+<li><h3>Will inner function have the access to outer function argument?</h3>
+
+```js
+function outer(str) {
+  let a = 10;
+  function inner() {
+    console.log(a, str);
+  }
+  return inner;
+}
+outer("Hello There")(); // 10 "Hello There"
+```
+
+<h4>Answer: </h4>Inner function will now form closure and will have access to both a and str.
+</li>
+<li><h3> In below code, will inner form closure with outest?</h3>
+
+```js
+function outest() {
+  var c = 20;
+  function outer(str) {
+    let a = 10;
+    function inner() {
+      console.log(a, c, str);
+    }
+    return inner;
+  }
+  return outer;
+}
+outest()("Hello There")(); // 10 20 "Hello There"
+```
+
+<h4>Answer: </h4>Yes, inner will have access to all its outer environment.
+</li>
+
+<li><h3>What will be the output of the following code with explanaion.</h3>
+
+```js
+function outest() {
+  var c = 20;
+  function outer(str) {
+    let a = 10;
+    function inner() {
+      console.log(a, c, str);
+    }
+    return inner;
+  }
+  return outer;
+}
+let a = 100;
+outest()("Hello There")(); // 10 20 "Hello There"
+```
+
+<h4>Answer:</h4>Still the same output, the inner function will have reference to inner a, so conflicting name won't matter here. If it wouldn't have find a inside outer function then it would have went more outer to find a and thus have printed 100. So, it try to resolve variable in scope chain and if a wouldn't have been found it would have given reference error.
 </li>
 
 <li><h3> Can you create a function named createBase to show the below functionality?</h3>
@@ -290,4 +378,162 @@ console.timeEnd("Second call");
 
 </li>
 
+<li><h3>What will be the output?</h3>
+
+```js
+function x() {
+  var i = 1;
+  setTimeout(function () {
+    console.log(i);
+  }, 3000);
+  console.log("Javascript");
+}
+x();
+// Output:
+// Javascript
+// 1 // after waiting 3 seconds
+```
+
+<ul>
+<li>We expect JS to wait 3 sec, print 1 and then go down and print the string. But JS prints string immediately, waits 3 sec and then prints 1.</li>
+<li>The function inside setTimeout forms a closure (remembers reference to i). So wherever function goes it carries this ref along with it.</li>
+<li>setTimeout takes this callback function & attaches timer of 3000ms and stores it. Goes to next line without waiting and prints string.</li>
+<li>After 3000ms runs out, JS takes function, puts it into call stack and runs it.</li>
+</ul>
+</li>
+
+<li><h3>Print 1 after 1 sec, 2 after 2 sec till 5 : Tricky interview question
+</h3>
+
+```js
+function x() {
+  for (var i = 1; i <= 5; i++) {
+    setTimeout(function () {
+      console.log(i);
+    }, i * 1000);
+  }
+  console.log("Javascript");
+}
+x();
+// Output:
+// Javascript
+// 6
+// 6
+// 6
+// 6
+// 6
+```
+
+<ul>
+<li>This happens because of closures. When setTimeout stores the function somewhere and attaches timer to it, the function remembers its reference to i, not value of i. All 5 copies of function point to same reference of i. JS stores these 5 functions, prints string and then comes back to the functions. By then the timer has run fully. And due to looping, the i value became 6. And when the callback fun runs the variable i = 6. So same 6 is printed in each log</li>
+<li>This happens because of closures. When setTimeout stores the function somewhere and attaches timer to it, the function remembers its reference to i, not value of i. All 5 copies of function point to same reference of i. JS stores these 5 functions, prints string and then comes back to the functions. By then the timer has run fully. And due to looping, the i value became 6. And when the callback fun runs the variable i = 6. So same 6 is printed in each log</li>
+</ul>
+
+<h4>Printing 1,2,3,4,5 using let</h4>
+
+```js
+function x() {
+  for (let i = 1; i <= 5; i++) {
+    setTimeout(function () {
+      console.log(i);
+    }, i * 1000);
+  }
+  console.log("Javascript");
+}
+x();
+// Output:
+// Javascript
+// 1
+// 2
+// 3
+// 4
+// 5
+```
+
+</li>
+
+<li><h3>Print the same without let using var</h3>
+
+```js
+function x() {
+  for (var i = 1; i <= 5; i++) {
+    function close(i) {
+      setTimeout(function () {
+        console.log(i);
+      }, i * 1000);
+      // put the setT function inside new function close()
+    }
+    close(i); // everytime you call close(i) it creates new copy of i. Only this time, it is with var itself!
+  }
+  console.log("Namaste Javascript");
+}
+x();
+```
+
+</li>
+
+<li><h3>Discuss more on Data hiding and encapsulation?</h3>
+
+```js
+// without closures
+var count = 0;
+function increment(){
+  count++;
+}
+// in the above code, anyone can access count and change it.
+
+------------------------------------------------------------------
+
+// (with closures) -> put everything into a function
+function counter() {
+  var count = 0;
+  function increment(){
+    count++;
+  }
+}
+console.log(count); // this will give referenceError as count can't be accessed. So now we are able to achieve hiding of data
+
+------------------------------------------------------------------
+
+//(increment with function using closure) true function
+function counter() {
+  var count = 0;
+  return function increment(){
+    count++;
+    console.log(count);
+  }
+}
+var counter1 = counter(); //counter function has closure with count var.
+counter1(); // increments counter
+
+var counter2 = counter();
+counter2(); // here counter2 is whole new copy of counter function and it wont impack the output of counter1
+
+*************************
+
+// Above code is not good and scalable for say, when you plan to implement decrement counter at a later stage.
+// To address this issue, we use *constructors*
+
+// Adding decrement counter and refactoring code:
+function Counter() {
+//constructor function. Good coding would be to capitalize first letter of constructor function.
+  var count = 0;
+  this.incrementCounter = function() { //anonymous function
+    count++;
+    console.log(count);
+  }
+   this.decrementCounter = function() {
+    count--;
+    console.log(count);
+  }
+}
+
+var counter1 = new Counter();  // new keyword for constructor fun
+counter1.incrementCounter();
+counter1.incrementCounter();
+counter1.decrementCounter();
+// returns 1 2 1
+```
+
+</li>
 </ol>
