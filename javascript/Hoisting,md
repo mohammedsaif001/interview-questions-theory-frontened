@@ -61,6 +61,62 @@ let count = 6; // ReferenceError : cannot access 'count' before initialization
 
 Yes ! they are hoisted but in temporal dead zone.
 
+## Undesrtand Hoisting of let and const
+
+```js
+console.log(a); // ReferenceError: Cannot access 'a' before initialization
+console.log(b); // prints undefined as expected
+let a = 10;
+console.log(a); // 10
+var b = 15;
+console.log(window.a); // undefined
+console.log(window.b); // 15
+```
+
+It looks like let isn't hoisted but it is!
+<br/><br/>
+Both a and b are actually initialized as undefined in hoisting stage. But var b is inside the storage space of GLOBAL, and a is in a separate memory object called script, where it can be accessed only after assigning some value to it first ie. one can access 'a' only if it is assigned. Thus, it throws error.
+
 ### What is Temporal dead zone?
 
 It is the time between declaration and initialization of let and const variables.
+Or in other words,it is the time since when the let variable was hoisted until it is initialized some value.
+
+<h4>Note: Reference Error are thrown when variables are in temporal dead zone.</h4>
+
+PS: If it was <b>syntax error</b> it doesn't even let us run single line of code.
+
+```js
+  let a = 10;
+  let a = 100;  //this code is rejected upfront as SyntaxError. (duplicate declaration)
+  ------------------
+  let a = 10;
+  var a = 100; // this code also rejected upfront as SyntaxError. (can't use same name in same scope)
+```
+
+## Different Types of Error
+
+<ol>
+<li><h4>Uncaught ReferenceError: x is not defined at ...</h4>
+This Error signifies that x has never been in the scope of the program. This literally means that x was never defined/declared and is being tried to be accesed.</li>
+<li><h4>
+Uncaught ReferenceError: cannot access 'a' before initialization</h4>This Error signifies that 'a' cannot be accessed because it is declared as 'let' and since it is not assigned a value, it is its Temporal Dead Zone. Thus, this error occurs.</li>
+<li><h4>Uncaught SyntaxError: Identifier 'a' has already been declared</h4>This Error signifies that we are redeclaring a variable that is 'let' declared. No execution will take place.</li>
+<li><h4>Uncaught SyntaxError: Missing initializer in const declaration</h4>This Error signifies that we haven't initialized or assigned value to a const declaration.</li>
+<li><h4>Uncaught TypeError: Assignment to constant variable</h4>This Error signifies that we are reassigning to a const variable.</li>
+
+</ol>
+
+```js
+
+let a;
+a = 10;
+console.log(a) // 10. Note declaration and assigning of a is in different lines.
+------------------
+const b;
+b = 10;
+console.log(b); // SyntaxError: Missing initializer in const declaration. (This type of declaration won't work with const. const b = 10 only will work)
+------------------
+const b = 100;
+b = 1000; //this gives us TypeError: Assignment to constant variable.
+```
